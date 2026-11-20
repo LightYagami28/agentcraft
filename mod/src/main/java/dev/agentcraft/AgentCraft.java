@@ -33,6 +33,9 @@ public class AgentCraft implements ModInitializer {
 		AgentCraftCommands.init();
 		HqFeature.init();
 		LOGGER.info("AgentCraft common init done ({} blocks, cast {})", ModBlocks.all().size(), Cast.ids());
+		if (ModBlocks.all().isEmpty()) {
+			LOGGER.warn("No blocks registered; mod may be misconfigured");
+		}
 	}
 
 	public static Identifier id(String path) {
