@@ -54,6 +54,9 @@ dependencies {
 	include("org.java-websocket:Java-WebSocket:${project.java_websocket_version}") {
 		exclude group: 'org.slf4j'
 	}
+
+	testImplementation "org.junit.jupiter:junit-jupiter:${project.junit_version}"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:${project.junit_version}"
 }
 
 processResources {
@@ -73,6 +76,10 @@ tasks.withType(JavaCompile).configureEach {
 java {
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
+}
+
+test {
+	useJUnitPlatform()
 }
 
 // Seed mod/run with a dev options.txt (muted, 1080p-friendly GUI scale, no onboarding/tutorial
