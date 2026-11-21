@@ -39,3 +39,12 @@ Fonti verificate: `README.md`, `CHANGELOG.md`, `docs/SPEC.md`, `mod/build.gradle
 
 - Push automatici o merge senza conferma dell'utente.
 - Modifiche al checkout dell'utente o ai suoi branch.
+
+## Verifica 2026-11-21
+
+Aggiunti `SECURITY.md` e `CODE_OF_CONDUCT.md` con i confini operativi del protocollo.
+Verifica mod: `.\gradlew test --no-daemon --rerun-tasks` dalla cartella `mod/` —
+BUILD SUCCESSFUL, 6 task eseguiti, 0 fallimenti.
+NON RISOLTO: `@SuppressWarnings` residuo in `ForemanJson.java` (cast generico richiesto
+dalla firma `TypeAdapterFactory.create`) e soppressioni nella cartella TypeScript
+`foreman/`, fuori dall'ambito di questo lotto. Il remote e' di terzi e nega il push.
