@@ -456,6 +456,10 @@ public final class ForemanState {
 	}
 
 	private void applySnapshot(Snapshot s) {
+		List<String> problems = s.validate();
+		if (!problems.isEmpty()) {
+			AgentCraft.LOGGER.warn("Foreman snapshot problems ({}): {}", problems.size(), String.join("; ", problems));
+		}
 		agents.clear();
 		tasks.clear();
 		decisions.clear();
