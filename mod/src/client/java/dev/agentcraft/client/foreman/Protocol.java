@@ -1,8 +1,11 @@
 package dev.agentcraft.client.foreman;
 
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -262,6 +265,64 @@ public final class Protocol {
 			goals = goals == null ? List.of() : List.copyOf(goals);
 			feed = feed == null ? List.of() : List.copyOf(feed);
 			logs = logs == null ? List.of() : List.copyOf(logs);
+		}
+
+		/**
+		 * Health check of a snapshot: duplicate ids and references to missing entities.
+		 * An empty list means the snapshot is consistent. Reported problems do not block the
+		 * application; the state model logs them instead.
+		 */
+		public List<String> validate() {
+			List<String> problems = new ArrayList<>();
+			Set<String> agentIds = new HashSet<>();
+			for (Agent a : agents) {
+				if (a == null || a.id() == null || a.id().isBlank()) {
+					problems.add("agent without id");
+				} else if (!agentIds.add(a.id())) {
+					problems.add("duplicate agent: " + a.id());
+				}
+			}
+			Set<String> taskIds = new HashSet<>();
+			for (Task t : tasks) {
+				if (t == null || t.id() == null || t.id().isBlank()) {
+					problems.add("task without id");
+					continue;
+				}
+				if (!taskIds.add(t.id())) problems.add("duplicate task: " + t.id());
+				if (t.assignee() != null && !agentIds.contains(t.assignee())) {
+					problems.add("task " + t.id() + ": unknown assignee " + t.assignee());
+				}
+				for (String dep : t.deps()) {
+					if (dep != null && !taskIds.contains(dep)) {
+						problems.add("task " + t.id() + ": unknown dependency " + dep);
+					}
+				}
+			}
+			Set<String> decisionIds = new HashSet<>();
+			for (Decision d : decisions) {
+				if (d == null || d.id() == null || d.id().isBlank()) {
+					problems.add("decision without id");
+					continue;
+				}
+				if (!decisionIds.add(d.id())) problems.add("duplicate decision: " + d.id());
+				if (d.agentId() != null && !agentIds.contains(d.agentId())) {
+					problems.add("decision " + d.id() + ": unknown agent " + d.agentId());
+				}
+				if (d.taskId() != null && !taskIds.contains(d.taskId())) {
+					problems.add("decision " + d.id() + ": unknown task " + d.taskId());
+				}
+			}
+			for (AgentLogs l : logs) {
+				if (l != null && l.agentId() != null && !agentIds.contains(l.agentId())) {
+					problems.add("logs: unknown agent " + l.agentId());
+				}
+			}
+			for (FeedItem f : feed) {
+				if (f != null && f.agentId() != null && !agentIds.contains(f.agentId())) {
+					problems.add("feed: unknown agent " + f.agentId());
+				}
+			}
+			return List.copyOf(problems);
 		}
 	}
 
