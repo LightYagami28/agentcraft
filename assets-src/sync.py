@@ -37,7 +37,7 @@ DST_DEFAULT = HERE.parent / "mod" / "src" / "main" / "resources" / "assets"
 
 
 def digest_bytes(b: bytes) -> str:
-    return hashlib.sha1(b).hexdigest()
+    return hashlib.sha256(b).hexdigest()
 
 
 def is_lang(rel: str) -> bool:

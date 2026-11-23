@@ -54,6 +54,29 @@ dependencies {
 	include("org.java-websocket:Java-WebSocket:${project.java_websocket_version}") {
 		exclude group: 'org.slf4j'
 	}
+
+	// Minecraft 26.3 pulls older transitive builds with published advisories.
+	// Constraints upgrade them to the fixed releases without adding direct dependencies.
+	constraints {
+		implementation('at.yawk.lz4:lz4-java:1.14.1') {
+			because 'versioni precedenti: GHSA-343h-94h5-c4wr, GHSA-4v53-57pg-c464, GHSA-6cx8-rjf8-pr8g, GHSA-gm45-99xc-r7wv, GHSA-mcr4-qmvw-px4g, GHSA-xx22-p4ch-683r'
+		}
+		implementation('com.google.guava:guava:33.8.0-jre') {
+			because 'versioni precedenti: GHSA-xxph-c9ww-hj94'
+		}
+		['codec-http', 'handler', 'buffer', 'codec-base', 'codec-compression', 'common',
+		 'resolver', 'transport', 'transport-classes-epoll', 'transport-classes-kqueue',
+		 'transport-native-unix-common', 'transport-native-epoll', 'transport-native-kqueue'].each { module ->
+			implementation("io.netty:netty-${module}:4.2.21.Final") {
+				because 'versioni precedenti: GHSA-8c42-7qj2-3j46, GHSA-c4c3-7fpv-j4q5, GHSA-fccg-mwvh-qqg4'
+			}
+		}
+		['log4j-api', 'log4j-core', 'log4j-slf4j2-impl'].each { module ->
+			implementation("org.apache.logging.log4j:${module}:2.26.1") {
+				because 'GHSA-qv9r-c865-cp47'
+			}
+		}
+	}
 }
 
 processResources {
