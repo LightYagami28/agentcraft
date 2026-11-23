@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "AgentCraft"
+type: software
+authors:
+  - family-names: Maule
+    given-names: Alessandro
+    alias: Light Yagami
+    email: maule2703@gmail.com
+license: MIT
+repository-code: "https://github.com/LightYagami28/agentcraft"
+date-released: "2026-11-23"
+abstract: >-
+  A team of agents doing real work on your code inside a Minecraft studio:
+  planning, isolated worktrees, live review and shared memory. This repository
+  is a fork of blendi-remade/agentcraft.
