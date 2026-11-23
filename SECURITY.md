@@ -12,8 +12,10 @@ Security fixes are applied to the tip of `main` in this fork.
 
 ## Reporting a Vulnerability
 
-Do not open a public issue for a security problem. Email
-<developer@lightyagami.dev> with:
+Do not open a public issue for a security problem. Use GitHub's private
+vulnerability reporting for this fork
+([Report a vulnerability](https://github.com/LightYagami28/agentcraft/security/advisories/new))
+with:
 
 - the affected component and the revision you tested;
 - reproduction steps and a proof of concept, if you have one;
